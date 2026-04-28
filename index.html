@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paulo Murilo — Técnico em Informática</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F5F1EA;
+    --ink: #1A1814;
+    --ink-soft: #3D3A35;
+    --ink-mute: #7A7670;
+    --accent: #C44B1B;
+    --accent-pale: #F2E4DC;
+    --border: rgba(26,24,20,0.12);
+    --border-soft: rgba(26,24,20,0.06);
+    --mono: 'DM Mono', monospace;
+    --serif: 'DM Serif Display', serif;
+    --sans: 'Instrument Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── CURSOR ── */
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease, width 0.3s ease, height 0.3s ease, opacity 0.3s;
+  }
+  .cursor.expand { width: 40px; height: 40px; opacity: 0.3; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.25rem 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    backdrop-filter: blur(12px);
+    background: rgba(245,241,234,0.85);
+    border-bottom: 1px solid var(--border-soft);
+    transition: border-color 0.3s;
+  }
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+  }
+  .nav-links {
+    display: flex; gap: 2.5rem; list-style: none;
+  }
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    padding: 6rem 4rem 4rem 5vw;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative; z-index: 2;
+  }
+
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .hero-tag::before {
+    content: '';
+    display: block; width: 24px; height: 1px;
+    background: var(--accent);
+  }
+
+  .hero-name {
+    font-family: var(--serif);
+    font-size: clamp(3.5rem, 7vw, 5.5rem);
+    line-height: 1.0;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .hero-name em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-title {
+    font-size: 1.1rem;
+    color: var(--ink-mute);
+    font-weight: 400;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-desc {
+    font-size: 1rem;
+    color: var(--ink-soft);
+    line-height: 1.8;
+    max-width: 420px;
+    margin-bottom: 3rem;
+  }
+
+  .hero-ctas {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: var(--ink);
+    padding: 0.9rem 2rem;
+    border: none; cursor: pointer;
+    text-decoration: none;
+    transition: background 0.25s, transform 0.2s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--accent); transform: translateY(-2px); }
+
+  .btn-outline {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: transparent;
+    padding: 0.9rem 2rem;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.25s, color 0.25s, transform 0.2s;
+    display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+  .hero-right {
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-visual {
+    width: 100%; height: 100%;
+    position: absolute;
+    background: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(196,75,27,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(196,75,27,0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .hero-circle {
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    border: 1px solid rgba(196,75,27,0.3);
+    position: absolute;
+    animation: pulse-ring 4s ease-in-out infinite;
+  }
+  .hero-circle:nth-child(2) {
+    width: 480px; height: 480px;
+    border-color: rgba(196,75,27,0.15);
+    animation-delay: 1s;
+  }
+  .hero-circle:nth-child(3) {
+    width: 620px; height: 620px;
+    border-color: rgba(196,75,27,0.08);
+    animation-delay: 2s;
+  }
+
+  .hero-icon-center {
+    width: 100px; height: 100px;
+    border: 1px solid rgba(196,75,27,0.5);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; z-index: 2;
+    animation: float 6s ease-in-out infinite;
+  }
+  .hero-icon-center svg { width: 48px; height: 48px; }
+
+  .hero-floaters {
+    position: absolute; inset: 0; z-index: 1;
+  }
+  .floater {
+    position: absolute;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: rgba(196,75,27,0.5);
+    letter-spacing: 0.1em;
+    animation: float 8s ease-in-out infinite;
+  }
+  .floater:nth-child(1) { top: 15%; left: 10%; animation-delay: 0s; }
+  .floater:nth-child(2) { top: 20%; right: 12%; animation-delay: 1.5s; }
+  .floater:nth-child(3) { bottom: 25%; left: 8%; animation-delay: 0.8s; }
+  .floater:nth-child(4) { bottom: 18%; right: 15%; animation-delay: 2.2s; }
+  .floater:nth-child(5) { top: 50%; left: 5%; animation-delay: 1s; }
+
+  .hero-stat-strip {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 1.5rem 2rem;
+    display: flex; gap: 2rem;
+    border-top: 1px solid rgba(196,75,27,0.2);
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(4px);
+    z-index: 3;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat-num {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    color: #fff;
+    display: block;
+  }
+  .hero-stat-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+  }
+
+  @keyframes pulse-ring {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.6; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  /* ── SECTION SHARED ── */
+  section { padding: 6rem 5vw; }
+  .section-header {
+    display: flex; align-items: flex-start;
+    gap: 3rem; margin-bottom: 4rem;
+  }
+  .section-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    margin-top: 0.4rem;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.1;
+    color: var(--ink);
+  }
+  .section-title em { font-style: italic; color: var(--accent); }
+  .section-sub {
+    font-size: 0.9rem;
+    color: var(--ink-mute);
+    margin-top: 0.5rem;
+    max-width: 440px;
+  }
+
+  /* ── ABOUT ── */
+  .about { background: var(--ink); color: var(--cream); }
+  .about .section-title { color: var(--cream); }
+  .about .section-num { color: var(--accent); }
+  .about .section-sub { color: rgba(245,241,234,0.5); }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .about-text p {
+    font-size: 1rem;
+    line-height: 1.9;
+    color: rgba(245,241,234,0.75);
+    margin-bottom: 1.25rem;
+  }
+  .about-text p:last-child { margin-bottom: 0; }
+
+  .about-facts {
+    display: flex; flex-direction: column; gap: 1.5rem;
+  }
+
+  .fact-item {
+    padding: 1.5rem;
+    border: 1px solid rgba(245,241,234,0.08);
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .fact-item:hover {
+    border-color: rgba(196,75,27,0.4);
+    background: rgba(196,75,27,0.05);
+  }
+  .fact-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .fact-value {
+    font-size: 0.95rem;
+    color: rgba(245,241,234,0.8);
+    font-weight: 500;
+  }
+
+  /* ── SKILLS ── */
+  .skills-wrap {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .skill-card {
+    background: var(--cream);
+    padding: 2rem;
+    transition: background 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .skill-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 3px; height: 0;
+    background: var(--accent);
+    transition: height 0.4s ease;
+  }
+  .skill-card:hover::before { height: 100%; }
+  .skill-card:hover { background: var(--accent-pale); }
+
+  .skill-icon {
+    width: 40px; height: 40px;
+    background: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.25rem;
+  }
+  .skill-icon svg { width: 20px; height: 20px; stroke: var(--cream); fill: none; stroke-width: 1.5; }
+
+  .skill-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .skill-desc {
+    font-size: 0.82rem;
+    color: var(--ink-mute);
+    line-height: 1.6;
+  }
+
+  .skill-bar-wrap {
+    margin-top: 1rem;
+    height: 2px;
+    background: var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .skill-bar {
+    height: 100%;
+    background: var(--accent);
+    width: 0;
+    transition: width 1s ease;
+  }
+
+  /* ── EDUCATION ── */
+  .edu { background: var(--accent-pale); }
+
+  .edu-card {
+    border: 1px solid var(--border);
+    padding: 3rem;
+    background: var(--cream);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 3rem;
+    align-items: start;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .edu-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(26,24,20,0.1);
+  }
+
+  .edu-year {
+    font-family: var(--serif);
+    font-size: 3.5rem;
+    color: var(--accent);
+    line-height: 1;
+    opacity: 0.3;
+  }
+
+  .edu-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(196,75,27,0.3);
+    padding: 0.3rem 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .edu-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: blink 1.5s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+  .edu-degree {
+    font-family: var(--serif);
+    font-size: 1.75rem;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .edu-institution {
+    font-size: 0.9rem;
+    color: var(--ink-mute);
+    margin-bottom: 1.5rem;
+  }
+  .edu-detail {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+
+  /* ── DEVELOPING ── */
+  .developing { background: var(--ink); }
+  .developing .section-title { color: var(--cream); }
+  .developing .section-num { color: var(--accent); }
+  .developing .section-sub { color: rgba(245,241,234,0.45); }
+
+  .dev-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: rgba(255,255,255,0.06);
+  }
+
+  .dev-item {
+    padding: 2rem 1.5rem;
+    background: var(--ink);
+    border-left: 3px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .dev-item:hover {
+    border-left-color: var(--accent);
+    background: rgba(196,75,27,0.06);
+  }
+  .dev-item-icon {
+    font-family: var(--mono);
+    font-size: 20px;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    opacity: 0.7;
+  }
+  .dev-item-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: rgba(245,241,234,0.9);
+    margin-bottom: 0.35rem;
+  }
+  .dev-item-sub {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(196,75,27,0.6);
+  }
+
+  /* ── TRAITS ── */
+  .traits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .trait-card {
+    padding: 2.5rem 2rem;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s;
+  }
+  .trait-card:hover { transform: translateY(-4px); }
+  .trait-card::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+  }
+  .trait-card:hover::after { transform: scaleX(1); }
+
+  .trait-num {
+    font-family: var(--serif);
+    font-size: 4rem;
+    color: var(--border);
+    line-height: 1;
+    margin-bottom: 1rem;
+    transition: color 0.3s;
+  }
+  .trait-card:hover .trait-num { color: var(--accent-pale); }
+
+  .trait-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .trait-desc {
+    font-size: 0.85rem;
+    color: var(--ink-mute);
+    line-height: 1.7;
+  }
+
+  /* ── CONTACT ── */
+  .contact { background: var(--ink); color: var(--cream); }
+  .contact .section-title { color: var(--cream); }
+  .contact .section-num { color: var(--accent); }
+
+  .contact-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .contact-intro {
+    font-size: 1.05rem;
+    color: rgba(245,241,234,0.65);
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+  }
+
+  .contact-links {
+    display: flex; flex-direction: column; gap: 1px;
+    background: rgba(255,255,255,0.06);
+  }
+  .contact-link {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    background: var(--ink);
+    text-decoration: none;
+    color: var(--cream);
+    transition: background 0.25s, padding-left 0.25s;
+  }
+  .contact-link:hover {
+    background: rgba(196,75,27,0.12);
+    padding-left: 2rem;
+  }
+  .contact-link-left {
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .contact-link-icon {
+    width: 32px; height: 32px;
+    background: rgba(196,75,27,0.2);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .contact-link-icon svg { width: 14px; height: 14px; stroke: var(--accent); fill: none; stroke-width: 2; }
+  .contact-link-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+  .contact-link-value {
+    font-size: 0.9rem;
+    color: rgba(245,241,234,0.8);
+  }
+  .contact-link-arrow {
+    font-size: 16px;
+    color: var(--accent);
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: opacity 0.25s, transform 0.25s;
+  }
+  .contact-link:hover .contact-link-arrow { opacity: 1; transform: translateX(0); }
+
+  .contact-form-side { display: flex; flex-direction: column; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-group label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(196,75,27,0.7);
+  }
+  .form-group input,
+  .form-group textarea {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--cream);
+    padding: 0.85rem 1rem;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.25s;
+    resize: none;
+  }
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: rgba(245,241,234,0.2); }
+  .form-group input:focus,
+  .form-group textarea:focus { border-color: var(--accent); }
+
+  .form-submit {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: var(--accent);
+    border: none;
+    padding: 1rem 2rem;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 0.5rem;
+    transition: background 0.25s, transform 0.2s;
+  }
+  .form-submit:hover { background: #a83a14; transform: translateY(-2px); }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 2rem 5vw;
+    background: #111;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-left {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 0.08em;
+  }
+  .footer-right {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { padding: 8rem 1.5rem 3rem; }
+    .hero-right { height: 300px; }
+    section { padding: 4rem 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .traits-grid { grid-template-columns: 1fr; }
+    .contact-body { grid-template-columns: 1fr; gap: 3rem; }
+    .edu-card { grid-template-columns: 1fr; gap: 1rem; }
+    .section-header { flex-direction: column; gap: 0.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">PM · Portfolio</span>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#habilidades">Habilidades</a></li>
+    <li><a href="#formacao">Formação</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Técnico em Informática</div>
+    <h1 class="hero-name">Paulo<br><em>Murilo</em></h1>
+    <p class="hero-title">Montagem &amp; Manutenção de Computadores · ADS</p>
+    <p class="hero-desc">
+      Apaixonado por tecnologia, com foco em hardware, configuração de sistemas e resolução de problemas técnicos. Sempre em busca de evolução e novos desafios.
+    </p>
+    <div class="hero-ctas">
+      <a href="#contato" class="btn-primary">Entre em contato</a>
+      <a href="#habilidades" class="btn-outline">Ver habilidades</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-visual">
+      <div class="hero-grid"></div>
+      <div class="hero-circle"></div>
+      <div class="hero-circle"></div>
+      <div class="hero-circle"></div>
+
+      <div class="hero-floaters">
+        <span class="floater">HARDWARE</span>
+        <span class="floater">WINDOWS</span>
+        <span class="floater">MANUTENÇÃO</span>
+        <span class="floater">ADS</span>
+        <span class="floater">SUPORTE</span>
+      </div>
+
+      <div class="hero-icon-center">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="10" width="40" height="28" rx="2" stroke="#C44B1B" stroke-width="2"/>
+          <path d="M16 38v4M32 38v4M12 42h24" stroke="#C44B1B" stroke-width="2" stroke-linecap="round"/>
+          <rect x="10" y="16" width="8" height="6" rx="1" stroke="rgba(196,75,27,0.5)" stroke-width="1.5"/>
+          <rect x="22" y="16" width="8" height="6" rx="1" stroke="rgba(196,75,27,0.5)" stroke-width="1.5"/>
+          <rect x="34" y="16" width="2" height="6" rx="0.5" stroke="rgba(196,75,27,0.5)" stroke-width="1.5"/>
+          <path d="M10 26h28" stroke="rgba(196,75,27,0.3)" stroke-width="1" stroke-dasharray="3 3"/>
+          <path d="M10 30h20" stroke="rgba(196,75,27,0.2)" stroke-width="1" stroke-dasharray="3 3"/>
+        </svg>
+      </div>
+
+      <div class="hero-stat-strip">
+        <div class="hero-stat">
+          <span class="hero-stat-num">+2</span>
+          <span class="hero-stat-label">Anos Aprendendo</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-num">PI</span>
+          <span class="hero-stat-label">Agricolândia</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-num">ADS</span>
+          <span class="hero-stat-label">Em andamento</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about reveal" id="sobre">
+  <div class="section-header">
+    <span class="section-num">01 —</span>
+    <div>
+      <h2 class="section-title">Quem <em>sou</em> eu</h2>
+      <p class="section-sub">Um perfil técnico autodidata com vontade de crescer.</p>
+    </div>
+  </div>
+
+  <div class="about-grid">
+    <div class="about-text">
+      <p>
+        Sou Paulo Murilo, técnico em informática com foco em montagem e manutenção de computadores. Tenho experiência prática em identificação de peças, compatibilidade entre componentes e otimização de desempenho.
+      </p>
+      <p>
+        No dia a dia, já resolvi inúmeros problemas comuns: instalação de sistemas operacionais, formatação, criação de pendrives bootáveis, troca de componentes e limpeza interna de máquinas.
+      </p>
+      <p>
+        Além do hardware, estou em formação em Análise e Desenvolvimento de Sistemas, ampliando minha visão para o mundo do software e da lógica de programação.
+      </p>
+    </div>
+
+    <div class="about-facts">
+      <div class="fact-item">
+        <div class="fact-label">Localização</div>
+        <div class="fact-value">Agricolândia, Piauí — BR</div>
+      </div>
+      <div class="fact-item">
+        <div class="fact-label">Área de atuação</div>
+        <div class="fact-value">Informática, Hardware &amp; Suporte Técnico</div>
+      </div>
+      <div class="fact-item">
+        <div class="fact-label">Formação atual</div>
+        <div class="fact-value">Tecnólogo em ADS — Ensino Superior</div>
+      </div>
+      <div class="fact-item">
+        <div class="fact-label">Perfil</div>
+        <div class="fact-value">Autodidata · Proativo · Curioso</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="habilidades" class="reveal">
+  <div class="section-header">
+    <span class="section-num">02 —</span>
+    <div>
+      <h2 class="section-title">Minhas <em>habilidades</em></h2>
+      <p class="section-sub">Competências técnicas desenvolvidas na prática.</p>
+    </div>
+  </div>
+
+  <div class="skills-wrap">
+    <div class="skill-card">
+      <div class="skill-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <div class="skill-name">Montagem de PCs</div>
+      <div class="skill-desc">Montagem completa de desktops, desde a placa-mãe até o gerenciamento de cabos e testes finais.</div>
+      <div class="skill-bar-wrap"><div class="skill-bar" data-width="90"></div></div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-icon">
+        <svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
+      </div>
+      <div class="skill-name">Identificação de Hardware</div>
+      <div class="skill-desc">Reconhecimento de componentes, verificação de compatibilidade e upgrades de desempenho.</div>
+      <div class="skill-bar-wrap"><div class="skill-bar" data-width="85"></div></div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      </div>
+      <div class="skill-name">Sistemas Operacionais</div>
+      <div class="skill-desc">Instalação, configuração, formatação e otimização do Windows. Criação de pendrives bootáveis.</div>
+      <div class="skill-bar-wrap"><div class="skill-bar" data-width="88"></div></div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-icon">
+        <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      </div>
+      <div class="skill-name">Manutenção &amp; Reparo</div>
+      <div class="skill-desc">Troca de peças, limpeza interna, diagnóstico de falhas e resolução de problemas técnicos.</div>
+      <div class="skill-bar-wrap"><div class="skill-bar" data-width="82"></div></div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </div>
+      <div class="skill-name">Lógica de Programação</div>
+      <div class="skill-desc">Noções básicas adquiridas no curso de ADS, em desenvolvimento contínuo.</div>
+      <div class="skill-bar-wrap"><div class="skill-bar" data-width="45"></div></div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-icon">
+        <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.06 6.06l.88-.88a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </div>
+      <div class="skill-name">Suporte Técnico</div>
+      <div class="skill-desc">Atendimento e resolução de problemas do cotidiano em computadores de forma eficaz.</div>
+      <div class="skill-bar-wrap"><div class="skill-bar" data-width="80"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section class="edu reveal" id="formacao">
+  <div class="section-header">
+    <span class="section-num">03 —</span>
+    <div>
+      <h2 class="section-title">Minha <em>formação</em></h2>
+      <p class="section-sub">Trajetória acadêmica e técnica.</p>
+    </div>
+  </div>
+
+  <div class="edu-card">
+    <div class="edu-year">ADS</div>
+    <div>
+      <div class="edu-badge">Em andamento</div>
+      <div class="edu-degree">Tecnólogo em Análise e Desenvolvimento de Sistemas</div>
+      <div class="edu-institution">Ensino Superior · Cursando atualmente</div>
+      <div class="edu-detail">
+        Formação voltada para o desenvolvimento de software, algoritmos e sistemas. Estudo de lógica de programação, estruturas de dados e funcionamento de sistemas computacionais. Complementa a formação técnica em hardware com uma visão completa da tecnologia.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEVELOPING -->
+<section class="developing reveal">
+  <div class="section-header">
+    <span class="section-num">04 —</span>
+    <div>
+      <h2 class="section-title">Em <em>desenvolvimento</em></h2>
+      <p class="section-sub">Áreas que estou explorando e evoluindo.</p>
+    </div>
+  </div>
+
+  <div class="dev-list">
+    <div class="dev-item">
+      <div class="dev-item-icon">⌘</div>
+      <div class="dev-item-title">Suporte a Impressoras</div>
+      <div class="dev-item-sub">Em aprendizado</div>
+    </div>
+    <div class="dev-item">
+      <div class="dev-item-icon">◈</div>
+      <div class="dev-item-title">Manutenção de Celulares</div>
+      <div class="dev-item-sub">Fase inicial</div>
+    </div>
+    <div class="dev-item">
+      <div class="dev-item-icon">⊞</div>
+      <div class="dev-item-title">Redes &amp; Switch</div>
+      <div class="dev-item-sub">Em aprendizado</div>
+    </div>
+    <div class="dev-item">
+      <div class="dev-item-icon">▷</div>
+      <div class="dev-item-title">Programação</div>
+      <div class="dev-item-sub">Crescimento contínuo</div>
+    </div>
+  </div>
+</section>
+
+<!-- TRAITS -->
+<section class="reveal">
+  <div class="section-header">
+    <span class="section-num">05 —</span>
+    <div>
+      <h2 class="section-title">Como <em>trabalho</em></h2>
+      <p class="section-sub">Características que definem minha postura profissional.</p>
+    </div>
+  </div>
+
+  <div class="traits-grid">
+    <div class="trait-card">
+      <div class="trait-num">01</div>
+      <div class="trait-title">Autodidata</div>
+      <div class="trait-desc">Aprendo por conta própria, buscando fontes, tutoriais e prática direta. A curiosidade é meu principal motor.</div>
+    </div>
+    <div class="trait-card">
+      <div class="trait-num">02</div>
+      <div class="trait-title">Proatividade</div>
+      <div class="trait-desc">Não espero os problemas aparecerem. Antecipo soluções e busco melhorias antes que se tornem necessárias.</div>
+    </div>
+    <div class="trait-card">
+      <div class="trait-num">03</div>
+      <div class="trait-title">Evolução constante</div>
+      <div class="trait-desc">Tecnologia muda rápido. Me comprometo a aprender continuamente e manter meu conhecimento atualizado.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact reveal" id="contato">
+  <div class="section-header">
+    <span class="section-num">06 —</span>
+    <div>
+      <h2 class="section-title">Vamos <em>conversar</em></h2>
+      <p class="section-sub" style="color: rgba(245,241,234,0.4);">Aberto a oportunidades e colaborações.</p>
+    </div>
+  </div>
+
+  <div class="contact-body">
+    <div>
+      <p class="contact-intro">
+        Estou disponível para oportunidades na área de informática, suporte técnico e manutenção. Se você tem um projeto ou vaga, entre em contato!
+      </p>
+
+      <div class="contact-links">
+        <a class="contact-link" href="tel:+5586994491340">
+          <div class="contact-link-left">
+            <div class="contact-link-icon">
+              <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.06 6.06l.88-.88a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <div>
+              <span class="contact-link-label">Telefone</span>
+              <span class="contact-link-value">(86) 9949-1340</span>
+            </div>
+          </div>
+          <span class="contact-link-arrow">→</span>
+        </a>
+
+        <a class="contact-link" href="mailto:paulomuriloltz67@gmail.com">
+          <div class="contact-link-left">
+            <div class="contact-link-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <span class="contact-link-label">E-mail</span>
+              <span class="contact-link-value">paulomuriloltz67@gmail.com</span>
+            </div>
+          </div>
+          <span class="contact-link-arrow">→</span>
+        </a>
+
+        <div class="contact-link" style="cursor: default;">
+          <div class="contact-link-left">
+            <div class="contact-link-icon">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <span class="contact-link-label">Localização</span>
+              <span class="contact-link-value">Agricolândia, Piauí — Brasil</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form-side">
+      <div class="form-group">
+        <label>Seu nome</label>
+        <input type="text" placeholder="Como devo te chamar?">
+      </div>
+      <div class="form-group">
+        <label>Seu e-mail</label>
+        <input type="email" placeholder="seu@email.com">
+      </div>
+      <div class="form-group">
+        <label>Mensagem</label>
+        <textarea rows="5" placeholder="Escreva sua mensagem aqui..."></textarea>
+      </div>
+      <button class="form-submit" onclick="handleSubmit(this)">Enviar mensagem →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-left">© 2025 Paulo Murilo Gonçalves</span>
+  <span class="footer-right">Técnico em Informática · PI · BR</span>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+  document.querySelectorAll('a, button, .skill-card, .trait-card, .fact-item, .dev-item').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Skill bars
+  const barObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.skill-bar').forEach(bar => {
+          bar.style.width = bar.dataset.width + '%';
+        });
+        barObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.skills-wrap').forEach(w => barObserver.observe(w));
+
+  // Form submit
+  function handleSubmit(btn) {
+    const name = document.querySelector('input[type=text]').value;
+    const email = document.querySelector('input[type=email]').value;
+    const msg = document.querySelector('textarea').value;
+    if (!name || !email || !msg) {
+      btn.textContent = '⚠ Preencha todos os campos';
+      btn.style.background = '#555';
+      setTimeout(() => { btn.textContent = 'Enviar mensagem →'; btn.style.background = ''; }, 2500);
+      return;
+    }
+    btn.textContent = '✓ Mensagem enviada!';
+    btn.style.background = '#1a6b3c';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = 'Enviar mensagem →';
+      btn.style.background = '';
+      btn.disabled = false;
+      document.querySelector('input[type=text]').value = '';
+      document.querySelector('input[type=email]').value = '';
+      document.querySelector('textarea').value = '';
+    }, 3000);
+  }
+</script>
+</body>
+</html>
